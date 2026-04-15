@@ -79,9 +79,10 @@ function Products({ activeCategoryId, searchQuery = '' }) {
                   className="prod-card"
                   style={{ animationDelay: `${i * 40}ms` }}
                   onClick={() => {
-                    sessionStorage.setItem('scrollToProducts', 'true')
-                    router.push(`/product-page/${p._id}`)
-                  }}
+  sessionStorage.setItem('scrollToProducts', 'true')
+  sessionStorage.setItem('allProductsCategoryId', activeCategoryId) // ← add this
+  router.push(`/product-page/${p._id}`)
+}}
                 >
                   <div className="prod-card-img-wrap">
                     <img src={p.mainImageUrl} alt={p.name[langKey] || p.name.en} className="prod-card-img" />

@@ -39,7 +39,7 @@ const labels = {
   },
 }
 
-function CategoryProducts({ activeCategoryId, onBack }) {
+function CategoryProducts({ activeCategoryId, searchQuery = '', onBack }) {
   const { activeLang } = useLang()
   const router = useRouter()
   const [products, setProducts] = useState([])
@@ -53,17 +53,19 @@ function CategoryProducts({ activeCategoryId, onBack }) {
   const langKey = activeLang.toLowerCase()
   const totalPages = Math.ceil(total / PAGE_SIZE)
 
-  // Reset to page 1 when category changes
   useEffect(() => { setPage(1) }, [activeCategoryId])
 
-  // Fetch products
   useEffect(() => {
-    if (!activeCategoryId || activeCategoryId === 'all') return
     clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(() => {
       setLoading(true)
       const params = new URLSearchParams({ page, limit: PAGE_SIZE })
-      params.append('category', activeCategoryId)
+      if (activeCategoryId && activeCategoryId !== 'all') {
+        params.append('category', activeCategoryId)
+      }
+      if (searchQuery.trim()) {
+        params.append('search', searchQuery.trim())
+      }
       fetch(`https://backend-19yj.onrender.com/products?${params}`)
         .then(r => r.json())
         .then(data => {
@@ -74,20 +76,17 @@ function CategoryProducts({ activeCategoryId, onBack }) {
         .finally(() => setLoading(false))
     }, 300)
     return () => clearTimeout(debounceRef.current)
-  }, [page, activeCategoryId])
+  }, [page, activeCategoryId, searchQuery])
 
-  // Don't render if no category selected
-  if (!activeCategoryId || activeCategoryId === 'all') return null
+  useEffect(() => { setPage(1) }, [activeCategoryId, searchQuery])
 
   return (
     <div className="cat-products-section" ref={sectionRef}>
 
-      {/* ── Back button ── */}
       <button className="cat-products-back" onClick={onBack}>
         {t.back}
       </button>
 
-      {/* ── Grid / loading / empty ── */}
       {loading ? (
         <div className="cat-products-loading">
           <div className="cat-products-spinner" />
@@ -105,6 +104,7 @@ function CategoryProducts({ activeCategoryId, onBack }) {
               style={{ animationDelay: `${i * 40}ms` }}
               onClick={() => {
                 sessionStorage.setItem('scrollToProducts', 'true')
+                sessionStorage.setItem('activeCategoryId', activeCategoryId) // ← save category
                 router.push(`/product-page/${p._id}`)
               }}
             >
@@ -137,7 +137,6 @@ function CategoryProducts({ activeCategoryId, onBack }) {
         </div>
       )}
 
-      {/* ── Pagination ── */}
       {totalPages > 1 && (
         <div className="products-pagination">
           <button

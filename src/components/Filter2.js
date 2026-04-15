@@ -5,7 +5,7 @@ import { useLang } from '../components/Langcontext'
 
 const allLabels = { EN: 'All', KA: 'ყველა', RU: 'Все' }
 
-function Filter({ onFilterChange, activeId = 'all' }) {  // ← accept activeId as prop
+function Filter2({ onFilterChange, activeId = 'all' }) {
   const { activeLang } = useLang()
   const [categories, setCategories] = useState([])
 
@@ -22,7 +22,7 @@ function Filter({ onFilterChange, activeId = 'all' }) {  // ← accept activeId 
   }, [])
 
   const handleSelect = (id) => {
-    if (onFilterChange) onFilterChange(id)  // ← just call parent, no local state
+    if (onFilterChange) onFilterChange(id)
   }
 
   const langKey = activeLang.toLowerCase()
@@ -51,4 +51,4 @@ function Filter({ onFilterChange, activeId = 'all' }) {  // ← accept activeId 
   )
 }
 
-export default Filter
+export default Filter2
