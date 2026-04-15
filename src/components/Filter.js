@@ -28,6 +28,7 @@ function Filter({ onFilterChange }) {
   }
 
   const langKey = activeLang.toLowerCase()
+  const sortedCategories = [...categories].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
 
   return (
     <div className="filter-wrapper">
@@ -38,8 +39,7 @@ function Filter({ onFilterChange }) {
         >
           {allLabels[activeLang]}
         </button>
-
-        {categories.map((cat) => (
+        {sortedCategories.map((cat) => (
           <button
             key={cat._id}
             className={`filter-tab${activeId === cat._id ? ' filter-tab--active' : ''}`}
