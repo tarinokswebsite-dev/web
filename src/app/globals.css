@@ -47,3 +47,7 @@ a {
     color-scheme: dark;
   }
 }
+
+body {
+  padding-top: var(--header-h);
+}
