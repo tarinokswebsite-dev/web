@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import '../styles/Header.css'
 import { useLang } from '../components/Langcontext'
+import { useRouter } from 'next/navigation'
 
 const translations = {
   EN: {
@@ -47,21 +48,19 @@ const Logo = ({ tagline }) => (
 )
 
 function Header() {
-  // Pull lang state from context so Footer stays in sync
   const { activeLang, setActiveLang } = useLang()
-
- const [activeNav, setActiveNav] = useState(0)
-
-useEffect(() => {
-  const path = window.location.pathname
-  if (path.includes('products')) setActiveNav(1)
-  else if (path.includes('contact')) setActiveNav(2)
-  else setActiveNav(0)
-}, [])
+  const router = useRouter()
+  const [activeNav, setActiveNav] = useState(0)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-
   const t = translations[activeLang]
+
+  useEffect(() => {
+    const path = window.location.pathname
+    if (path.includes('products')) setActiveNav(1)
+    else if (path.includes('contact')) setActiveNav(2)
+    else setActiveNav(0)
+  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -74,23 +73,28 @@ useEffect(() => {
     return () => { document.body.style.overflow = '' }
   }, [sidebarOpen])
 
+  const handleLogoClick = (e) => {
+    e.preventDefault()
+    setActiveNav(0)
+    if (window.location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      router.push('/')
+    }
+  }
+
   return (
     <>
       <header className={`header${scrolled ? ' header--scrolled' : ''}`}>
         <div className="header-inner">
 
-          <a href="#" className="logo-link" onClick={() => setActiveNav(0)}>
+          <a href="/" className="logo-link" onClick={handleLogoClick}>
             <Logo tagline={t.tagline} />
           </a>
 
           <nav className="desktop-nav" style={{ flex: 1, justifyContent: 'center' }}>
             {t.nav.map((label, i) => (
-              <a
-                key={i}
-                href={navHrefs[i]}
-                className={`nav-link${activeNav === i ? ' nav-link--active' : ''}`}
-                onClick={() => setActiveNav(i)}
-              >
+              <a key={i} href={navHrefs[i]} className={`nav-link${activeNav === i ? ' nav-link--active' : ''}`} onClick={() => setActiveNav(i)}>
                 {label}
                 {activeNav === i && <span className="nav-underline" />}
               </a>
@@ -100,21 +104,13 @@ useEffect(() => {
           <div className="header-right">
             <div className="lang-switcher">
               {langs.map(l => (
-                <button
-                  key={l}
-                  className={`lang-btn${activeLang === l ? ' lang-btn--active' : ''}`}
-                  onClick={() => setActiveLang(l)}
-                >
+                <button key={l} className={`lang-btn${activeLang === l ? ' lang-btn--active' : ''}`} onClick={() => setActiveLang(l)}>
                   {l}
                 </button>
               ))}
             </div>
 
-            <button
-              className={`burger${sidebarOpen ? ' burger--open' : ''}`}
-              onClick={() => setSidebarOpen(o => !o)}
-              aria-label="Toggle menu"
-            >
+            <button className={`burger${sidebarOpen ? ' burger--open' : ''}`} onClick={() => setSidebarOpen(o => !o)} aria-label="Toggle menu">
               <span /><span /><span />
             </button>
           </div>
@@ -123,10 +119,7 @@ useEffect(() => {
         <div className="header-line" />
       </header>
 
-      <div
-        className={`sidebar-overlay${sidebarOpen ? ' sidebar-overlay--visible' : ''}`}
-        onClick={() => setSidebarOpen(false)}
-      />
+      <div className={`sidebar-overlay${sidebarOpen ? ' sidebar-overlay--visible' : ''}`} onClick={() => setSidebarOpen(false)} />
 
       <aside className={`sidebar${sidebarOpen ? ' sidebar--open' : ''}`}>
         <div className="sidebar-header">
@@ -142,13 +135,7 @@ useEffect(() => {
 
         <nav className="sidebar-nav">
           {t.nav.map((label, i) => (
-            <a
-              key={i}
-              href={navHrefs[i]}
-              className={`sidebar-link${activeNav === i ? ' sidebar-link--active' : ''}`}
-              style={{ animationDelay: `${i * 60}ms` }}
-              onClick={() => { setActiveNav(i); setSidebarOpen(false) }}
-            >
+            <a key={i} href={navHrefs[i]} className={`sidebar-link${activeNav === i ? ' sidebar-link--active' : ''}`} style={{ animationDelay: `${i * 60}ms` }} onClick={() => { setActiveNav(i); setSidebarOpen(false) }}>
               <span className="sidebar-link-dot" />
               {label}
             </a>
@@ -161,11 +148,7 @@ useEffect(() => {
           <p className="sidebar-lang-label">{t.langLabel}</p>
           <div className="sidebar-lang-row">
             {langs.map(l => (
-              <button
-                key={l}
-                className={`lang-btn${activeLang === l ? ' lang-btn--active' : ''}`}
-                onClick={() => setActiveLang(l)}
-              >
+              <button key={l} className={`lang-btn${activeLang === l ? ' lang-btn--active' : ''}`} onClick={() => setActiveLang(l)}>
                 {l}
               </button>
             ))}
