@@ -24,7 +24,7 @@ const translations = {
   },
 }
 
-const navHrefs = ['#', '#', '#']
+const navHrefs = ['/', 'products', 'contact']
 const langs = ['EN', 'KA', 'RU']
 
 const Logo = ({ tagline }) => (
@@ -50,7 +50,14 @@ function Header() {
   // Pull lang state from context so Footer stays in sync
   const { activeLang, setActiveLang } = useLang()
 
-  const [activeNav, setActiveNav] = useState(0)
+ const [activeNav, setActiveNav] = useState(0)
+
+useEffect(() => {
+  const path = window.location.pathname
+  if (path.includes('products')) setActiveNav(1)
+  else if (path.includes('contact')) setActiveNav(2)
+  else setActiveNav(0)
+}, [])
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 

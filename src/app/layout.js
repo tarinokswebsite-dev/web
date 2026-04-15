@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from '../components/Header';
 import { LangProvider } from '../components/Langcontext';
 import Footer from '../components/Footer'
+import Sticky from '../components/Sticky'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
           <Header />
           {children}
           <Footer/>
+          <Sticky />
         </LangProvider>
         
       </body>

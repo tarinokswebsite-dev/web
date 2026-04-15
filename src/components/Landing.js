@@ -21,30 +21,30 @@ const translations = {
   },
 }
 
-function Landing() {
+function Landing({ onSearch }) {
   const { activeLang } = useLang()
   const t = translations[activeLang]
   const [search, setSearch] = useState('')
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
+    onSearch(e.target.value)
+  }
 
   return (
     <div className="landing-hero">
       <div className="landing-accent-bar" />
       <div className="landing-glow" />
-
       <div className="landing-inner">
         <div className="landing-badge">
           <span className="landing-badge-dot" />
           {t.badge}
         </div>
-
         <h1 className="landing-title">
           <span className="landing-title-t">T</span>ARINOKS
         </h1>
-
         <div className="landing-divider" />
-
         <p className="landing-sub">{t.sub}</p>
-
         <div className="landing-search-wrap">
           <svg className="landing-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <circle cx="11" cy="11" r="8" />
@@ -54,7 +54,7 @@ function Landing() {
             className="landing-search"
             placeholder={t.searchPlaceholder}
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={handleSearch}
           />
         </div>
       </div>
