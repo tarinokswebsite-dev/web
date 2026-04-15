@@ -3,16 +3,24 @@ import React, { useState, useEffect } from 'react'
 import '../styles/ProductsPage.css'
 import { useLang } from '../components/Langcontext'
 
-const backLabels   = { EN: '← Back to Products', KA: '← პროდუქტები', RU: '← Назад' }
+const backLabels     = { EN: '← Back to Products', KA: '← პროდუქტები', RU: '← Назад' }
 const inStockLabels  = { EN: '✓ In Stock', KA: '✓ მარაგშია', RU: '✓ В наличии' }
 const outStockLabels = { EN: 'Out of Stock', KA: 'არ არის მარაგში', RU: 'Нет в наличии' }
-const descLabels   = { EN: 'Description', KA: 'აღწერა', RU: 'Описание' }
+const descLabels     = { EN: 'Description', KA: 'აღწერა', RU: 'Описание' }
 const inquireLabels  = { EN: 'Inquire on WhatsApp', KA: 'WhatsApp-ით კითხვა', RU: 'Написать в WhatsApp' }
 const facebookLabels = { EN: 'Facebook', KA: 'Facebook', RU: 'Facebook' }
 
 function ProductsPage({ product, onBack }) {
   const { activeLang } = useLang()
   const [links, setLinks] = useState({ whatsapp: '#', facebook: '#' })
+
+  // Build full image list: main + gallery
+  const allImages = [
+    { url: product.mainImageUrl },
+    ...(product.galleryImages || []),
+  ]
+  const hasGallery = allImages.length > 1
+  const [activeImg, setActiveImg] = useState(0)
 
   useEffect(() => {
     (async () => {
@@ -31,11 +39,11 @@ function ProductsPage({ product, onBack }) {
 
   const langKey = activeLang.toLowerCase()
   const t = {
-    back:    backLabels[activeLang],
-    inStock: inStockLabels[activeLang],
+    back:     backLabels[activeLang],
+    inStock:  inStockLabels[activeLang],
     outStock: outStockLabels[activeLang],
-    desc:    descLabels[activeLang],
-    inquire: inquireLabels[activeLang],
+    desc:     descLabels[activeLang],
+    inquire:  inquireLabels[activeLang],
     facebook: facebookLabels[activeLang],
   }
 
@@ -43,10 +51,7 @@ function ProductsPage({ product, onBack }) {
   const desc     = product.description[langKey] || product.description.en
   const category = product.category?.name?.[langKey] || product.category?.name?.en || ''
   const waMessage = encodeURIComponent(`Hello! I'm interested in: ${product.name.en} — ₾${product.price.toLocaleString()}`)
-
-  const waHref = links.whatsapp !== '#'
-    ? `${links.whatsapp}?text=${waMessage}`
-    : '#'
+  const waHref = links.whatsapp !== '#' ? `${links.whatsapp}?text=${waMessage}` : '#'
 
   return (
     <div className="det-page">
@@ -54,10 +59,32 @@ function ProductsPage({ product, onBack }) {
         <button className="det-back" onClick={onBack}>{t.back}</button>
 
         <div className="det-grid">
-          <div className="det-img-wrap">
-            <img src={product.mainImageUrl} alt={name} className="det-img" />
+          {/* ── Image column ── */}
+          <div className="det-img-col">
+            <div className="det-img-wrap">
+              <img
+                src={allImages[activeImg]?.url}
+                alt={name}
+                className="det-img"
+              />
+            </div>
+
+            {hasGallery && (
+              <div className="det-thumbs">
+                {allImages.map((img, i) => (
+                  <button
+                    key={i}
+                    className={`det-thumb${activeImg === i ? ' det-thumb--active' : ''}`}
+                    onClick={() => setActiveImg(i)}
+                  >
+                    <img src={img.url} alt={`${name} ${i + 1}`} />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
+          {/* ── Info column ── */}
           <div className="det-info">
             <div className="det-badges">
               <span className="det-badge-cat">{category}</span>
