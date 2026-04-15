@@ -83,9 +83,7 @@ function CategoryProducts({ activeCategoryId, searchQuery = '', onBack }) {
   return (
     <div className="cat-products-section" ref={sectionRef}>
 
-      <button className="cat-products-back" onClick={onBack}>
-        {t.back}
-      </button>
+    
 
       {loading ? (
         <div className="cat-products-loading">
