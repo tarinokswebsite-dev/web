@@ -54,3 +54,19 @@
     height: 46px;
   }
 }
+
+.sticky-btn--phone {
+  background: #1A1A2E;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+.sticky-btn--phone:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+}
+
+.sticky-btn--maps {
+  background: #E8430A;
+  box-shadow: 0 4px 16px rgba(232, 67, 10, 0.35);
+}
+.sticky-btn--maps:hover {
+  box-shadow: 0 6px 24px rgba(232, 67, 10, 0.5);
+}
