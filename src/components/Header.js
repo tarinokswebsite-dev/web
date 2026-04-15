@@ -11,7 +11,7 @@ const translations = {
     footerSlogan: "Georgia's #1 Kitchen Equipment",
   },
   KA: {
-    tagline: 'პროფესიული სამზარეულო აღჭურვილობა',
+    tagline: 'პროფესიონალური სამზარეულო დანადგარები',
     nav: ['მთავარი', 'პროდუქტები', 'კონტაქტი'],
     langLabel: 'ენა',
     footerSlogan: 'საქართველოს #1 სამზარეულო აღჭურვილობა',
