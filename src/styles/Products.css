@@ -109,6 +109,7 @@
   margin-bottom: 6px;
   line-height: 1.35;
   font-family: 'Barlow', sans-serif;
+  word-break: break-word;
 }
 
 .prod-card-desc {
