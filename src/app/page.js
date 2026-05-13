@@ -10,8 +10,18 @@ export default function Home() {
   const [activeCategoryId, setActiveCategoryId] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Restore category when user comes back from product page
+  // On mount — handle sessionStorage (cross-page navigation)
   useEffect(() => {
+    const reset = sessionStorage.getItem('resetHome')
+    if (reset) {
+      setActiveCategoryId('all')
+      setSearchQuery('')
+      sessionStorage.removeItem('resetHome')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+
+    // Coming back from a product page — restore category
     const saved = sessionStorage.getItem('activeCategoryId')
     if (saved) {
       setActiveCategoryId(saved)
@@ -19,9 +29,19 @@ export default function Home() {
     }
   }, [])
 
+  // Listen for logo click when already on home page
+  useEffect(() => {
+    const handleReset = () => {
+      setActiveCategoryId('all')
+      setSearchQuery('')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+    window.addEventListener('resetHome', handleReset)
+    return () => window.removeEventListener('resetHome', handleReset)
+  }, [])
+
   const handleBack = () => {
     setSearchQuery('')
-    // activeCategoryId stays as-is
   }
 
   const isSearching = searchQuery.trim() !== ''

@@ -76,10 +76,16 @@ function Header() {
   const handleLogoClick = (e) => {
     e.preventDefault()
     setActiveNav(0)
+    setSidebarOpen(false)
+    // Dispatch custom event — Home page listens for this to reset filters
+    window.dispatchEvent(new CustomEvent('resetHome'))
+    // Also set sessionStorage as fallback for cross-page navigation
+    sessionStorage.setItem('resetHome', 'true')
     if (window.location.pathname === '/') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
       router.push('/')
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100)
     }
   }
 

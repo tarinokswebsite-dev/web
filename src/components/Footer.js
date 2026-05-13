@@ -10,6 +10,8 @@ const translations = {
     cta: 'Ready to build your professional kitchen? Reach us directly.',
     whatsapp: 'WhatsApp',
     facebook: 'Facebook',
+    phone: 'Call Us',
+    address: 'Address',
     rights: '© 2026 All rights reserved',
   },
   KA: {
@@ -18,6 +20,8 @@ const translations = {
     cta: 'მზად ხართ პროფესიული სამზარეულოს ასაშენებლად? დაგვიკავშირდით პირდაპირ.',
     whatsapp: 'WhatsApp',
     facebook: 'Facebook',
+    phone: 'დარეკეთ',
+    address: 'მისამართი',
     rights: '© 2026 ყველა უფლება დაცულია',
   },
   RU: {
@@ -26,6 +30,8 @@ const translations = {
     cta: 'Готовы построить профессиональную кухню? Свяжитесь с нами напрямую.',
     whatsapp: 'WhatsApp',
     facebook: 'Facebook',
+    phone: 'Позвонить',
+    address: 'Адрес',
     rights: '© 2026 Все права защищены',
   },
 }
@@ -36,21 +42,20 @@ function Footer() {
 
   const [links, setLinks] = useState({ whatsapp: '#', facebook: '#' })
 
- useEffect(() => {
-  (async () => {
-    try {
-      const res = await fetch('https://backend-19yj.onrender.com/social');
-      const data = await res.json();
-
-      setLinks({
-        whatsapp: data?.social?.whatsapp ?? '#',
-        facebook: data?.social?.facebook ?? '#',
-      });
-    } catch (err) {
-      console.log('Social API error:', err);
-    }
-  })();
-}, []);
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('https://backend-19yj.onrender.com/social')
+        const data = await res.json()
+        setLinks({
+          whatsapp: data?.social?.whatsapp ?? '#',
+          facebook: data?.social?.facebook ?? '#',
+        })
+      } catch (err) {
+        console.log('Social API error:', err)
+      }
+    })()
+  }, [])
 
   return (
     <footer className="footer-container">
@@ -61,6 +66,39 @@ function Footer() {
 
         <h2 className="footer-heading">{t.heading}</h2>
         <p className="footer-cta">{t.cta}</p>
+
+        {/* Contact info row */}
+        <div className="footer-info">
+          {/* Phone — clickable, dials on mobile */}
+          <a href="tel:+995500100470" className="footer-info-item">
+            <svg className="footer-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+            </svg>
+            <div className="footer-info-text">
+              <span className="footer-info-label">{t.phone}</span>
+              <span className="footer-info-value">+995 500 100 470</span>
+            </div>
+          </a>
+
+          <div className="footer-info-divider" />
+
+          {/* Address — opens Google Maps */}
+          <a
+            href="https://maps.app.goo.gl/v7YvHJYMZbdEPeAP7"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-info-item"
+          >
+            <svg className="footer-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <div className="footer-info-text">
+              <span className="footer-info-label">{t.address}</span>
+              <span className="footer-info-value">თბილისი, ზესტაფონის ქ. 31</span>
+            </div>
+          </a>
+        </div>
 
         <div className="footer-buttons">
           <a
