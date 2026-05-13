@@ -181,3 +181,19 @@ a.contact-card-value:hover {
     text-align: center;
   }
 }
+
+/* Makes location card look clickable */
+.contact-card--link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+.contact-card--link:hover {
+  border-color: rgba(192, 57, 43, 0.4);
+}
+
+/* Map wrapper as link */
+a.contact-map {
+  display: block;
+  cursor: pointer;
+}

@@ -12,6 +12,8 @@ const translations = {
     hours: 'Working Hours',
     hoursVal: 'Mon – Sat: 10:00 – 19:00',
     callBtn: 'Call Now',
+    openMap: 'Open in Maps →',
+    addressVal: 'Zestafoni St. 31, Tbilisi',
   },
   KA: {
     title: 'დაგვიკავშირდით',
@@ -21,6 +23,8 @@ const translations = {
     hours: 'სამუშაო საათები',
     hoursVal: 'ორშ – შაბ: 10:00 – 19:00',
     callBtn: 'დარეკვა',
+    openMap: 'რუკაზე გახსნა →',
+    addressVal: 'ზესტაფონის ქ. 31, თბილისი',
   },
   RU: {
     title: 'Свяжитесь с нами',
@@ -30,8 +34,12 @@ const translations = {
     hours: 'Часы работы',
     hoursVal: 'Пн – Сб: 10:00 – 19:00',
     callBtn: 'Позвонить',
+    openMap: 'Открыть в Maps →',
+    addressVal: 'ул. Зестафони 31, Тбилиси',
   },
 }
+
+const MAPS_URL = 'https://maps.app.goo.gl/v7YvHJYMZbdEPeAP7'
 
 function Contact() {
   const { activeLang } = useLang()
@@ -47,6 +55,7 @@ function Contact() {
       <div className="contact-body">
         <div className="contact-info">
 
+          {/* Phone */}
           <div className="contact-card">
             <div className="contact-card-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -60,7 +69,13 @@ function Contact() {
             <a href="tel:+995500100470" className="contact-call-btn">{t.callBtn}</a>
           </div>
 
-          <div className="contact-card">
+          {/* Location — clicks to Google Maps */}
+          <a
+            href={MAPS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-card contact-card--link"
+          >
             <div className="contact-card-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="10" r="3"/>
@@ -69,10 +84,12 @@ function Contact() {
             </div>
             <div className="contact-card-body">
               <span className="contact-card-label">{t.location}</span>
-              <span className="contact-card-value">Tbilisi, Georgia</span>
+              <span className="contact-card-value">{t.addressVal}</span>
             </div>
-          </div>
+            <span className="contact-call-btn">{t.openMap}</span>
+          </a>
 
+          {/* Hours */}
           <div className="contact-card">
             <div className="contact-card-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -88,18 +105,25 @@ function Contact() {
 
         </div>
 
-        <div className="contact-map">
-        <iframe
-  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2978.139!2d44.780573!3d41.741977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4044730033e99cf5%3A0x12da21eb5a4ea81c!2sTarinoks!5e0!3m2!1sen!2sge!4v1713000000000!5m2!1sen!2sge"
-  width="100%"
-  height="100%"
-  style={{ border: 0 }}
-  allowFullScreen=""
-  loading="lazy"
-  referrerPolicy="no-referrer-when-downgrade"
-  title="Tarinoks Location"
-/>
-        </div>
+        {/* Map — clicking opens Google Maps */}
+        <a
+          href={MAPS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="contact-map"
+        >
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2978.139!2d44.780573!3d41.741977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4044730033e99cf5%3A0x12da21eb5a4ea81c!2sTarinoks!5e0!3m2!1sen!2sge!4v1713000000000!5m2!1sen!2sge"
+            width="100%"
+            height="100%"
+            style={{ border: 0, pointerEvents: 'none' }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Tarinoks Location"
+          />
+        </a>
+
       </div>
     </div>
   )
